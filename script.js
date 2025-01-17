@@ -1,66 +1,50 @@
-// Script to manage the grid and object placement
 const grid = document.getElementById('grid');
 const gridSize = 40; // 40x40 grid
+let currentObject = null; // Tracks the currently selected object for placement
 
 // Initialize the grid
 function createGrid() {
   for (let i = 0; i < gridSize * gridSize; i++) {
     const tile = document.createElement('div');
     tile.classList.add('tile');
+    tile.dataset.index = i; // Add a unique index for each tile
+    tile.addEventListener('click', handleTileClick); // Add click listener to each tile
     grid.appendChild(tile);
   }
 }
 
-// Global function to clear all click event listeners from tiles
-function clearTileListeners() {
-  const tiles = document.querySelectorAll('.tile');
-  tiles.forEach(tile => {
-    const clone = tile.cloneNode(true); // Clone the tile to remove listeners
-    tile.parentNode.replaceChild(clone, tile);
-  });
-}
-
-// Add an object to the grid
-function addObject(className, size) {
-  clearTileListeners(); // Clear existing listeners before adding new ones
+// Handle tile click for placement
+function handleTileClick(event) {
+  if (!currentObject) return; // Do nothing if no object is selected
 
   const tiles = document.querySelectorAll('.tile');
-  tiles.forEach(tile => {
-    tile.addEventListener('click', function placeObject() {
-      // Determine the row and column of the clicked tile
-      const tileIndex = Array.from(tiles).indexOf(this);
-      const row = Math.floor(tileIndex / gridSize);
-      const col = tileIndex % gridSize;
+  const tileIndex = parseInt(event.target.dataset.index); // Use dataset to get the tile index
+  const row = Math.floor(tileIndex / gridSize);
+  const col = tileIndex % gridSize;
 
-      // Validate and place the object if placement is valid
-      if (canPlaceObject(row, col, size)) {
-        for (let r = 0; r < size; r++) {
-          for (let c = 0; c < size; c++) {
-            const index = (row + r) * gridSize + (col + c);
-            tiles[index].classList.add(className);
-          }
-        }
-      } else {
-        alert('Invalid placement!');
+  // Validate placement
+  if (canPlaceObject(row, col, currentObject.size)) {
+    // Place the object
+    for (let r = 0; r < currentObject.size; r++) {
+      for (let c = 0; c < currentObject.size; c++) {
+        const index = (row + r) * gridSize + (col + c);
+        tiles[index].classList.add(currentObject.className);
       }
-
-      // Clear listeners after placement attempt
-      clearTileListeners();
-    });
-  });
+    }
+    currentObject = null; // Reset current object after placement
+  } else {
+    alert('Invalid placement!');
+  }
 }
 
 // Validate object placement
 function canPlaceObject(row, col, size) {
-  // Check if the object goes out of bounds
   if (row + size > gridSize || col + size > gridSize) return false;
 
   const tiles = document.querySelectorAll('.tile');
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
       const index = (row + r) * gridSize + (col + c);
-
-      // Check if the tile is already occupied
       if (
         index >= tiles.length || // Out of grid range
         tiles[index].classList.contains('bear-trap') ||
@@ -81,6 +65,12 @@ function clearGrid() {
   tiles.forEach(tile => {
     tile.className = 'tile';
   });
+  currentObject = null; // Clear any selected object
+}
+
+// Set the current object for placement
+function addObject(className, size) {
+  currentObject = { className, size }; // Set the current object and size
 }
 
 // Event listeners for toolbar buttons
