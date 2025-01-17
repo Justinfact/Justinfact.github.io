@@ -294,6 +294,8 @@ document.getElementById('add-bear-trap').addEventListener('click', () => addObje
 document.getElementById('add-hq').addEventListener('click', () => addObject('hq', 3));
 document.getElementById('add-furnace').addEventListener('click', () => addObject('furnace', 2));
 document.getElementById('add-banner').addEventListener('click', () => addObject('banner', 1));
+document.getElementById('add-resource-node').addEventListener('click', () => addObject('resource-node', 2));
+document.getElementById('add-non-buildable').addEventListener('click', () => addObject('non-buildable-area', 1));
 document.getElementById('clear-grid').addEventListener('click', clearGrid);
 document.getElementById('save-layout').addEventListener('click', saveLayout);
 document.getElementById('load-layout').addEventListener('change', loadLayout);

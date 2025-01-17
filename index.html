@@ -63,12 +63,22 @@
       background-color: blue;
     }
 
+    .non-buildable-area {
+      background-color: black;
+    }
+
+    .resource-node {
+      background-color: black;
+    }
+
     .covered {
       background-color: lightblue;
     }
-    .bear-trap, .hq, .furnace, .banner {
+
+    .bear-trap, .hq, .furnace, .banner, .non-buildable-area, .resource-node {
       border: none !important;
     }
+
     .object-border-top {
       border-top: 2px solid black !important;
     }
@@ -89,10 +99,12 @@
 <body>
   <h1>Bear Trap Map</h1>
   <div id="toolbar">
-    <button id="add-bear-trap">Add Bear Trap</button>
-    <button id="add-hq">Add HQ</button>
-    <button id="add-furnace">Add Furnace</button>
-    <button id="add-banner">Add Banner</button>
+    <button id="add-bear-trap">Bear Trap</button>
+    <button id="add-hq">HQ</button>
+    <button id="add-furnace">Furnace</button>
+    <button id="add-banner">Banner</button>
+    <button id="add-resource-node">Resource Node</button>
+    <button id="add-non-buildable">Non-Buildable Area</button>
   </div>
   <div id="grid"></div>
   <div id="toolbar-bottom">
