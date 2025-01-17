@@ -46,9 +46,18 @@ function applyObjectBorder(row, col, size, className) {
   }
 }
 
-// Handle tile click for placement
 function handleTileClick(event) {
   if (!currentObject) return; // Do nothing if no object is selected
+
+  // Enforce placement limits for HQs and Bear Traps
+  if (currentObject.className === 'hq' && hqCount >= 1) {
+    alert('Only 1 HQ is allowed on the grid.');
+    return;
+  }
+  if (currentObject.className === 'bear-trap' && bearTrapCount >= 2) {
+    alert('Only 2 Bear Traps are allowed on the grid.');
+    return;
+  }
 
   const tiles = document.querySelectorAll('.tile');
   const tileIndex = parseInt(event.target.dataset.index); // Use dataset to get the tile index
@@ -91,35 +100,26 @@ function handleTileClick(event) {
   }
 }
 
-// Apply a border around the outer edge of an object (except Banner)
 function applyObjectBorder(row, col, size) {
   const tiles = document.querySelectorAll('.tile');
 
-  // Loop through the object's grid
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
       const index = (row + r) * gridSize + (col + c);
       const tile = tiles[index];
 
       // Apply top border to the top row
-      if (r === 0) {
-        tile.classList.add('object-border-top');
-      }
+      if (r === 0) tile.classList.add('object-border-top');
       // Apply bottom border to the bottom row
-      if (r === size - 1) {
-        tile.classList.add('object-border-bottom');
-      }
+      if (r === size - 1) tile.classList.add('object-border-bottom');
       // Apply left border to the left column
-      if (c === 0) {
-        tile.classList.add('object-border-left');
-      }
+      if (c === 0) tile.classList.add('object-border-left');
       // Apply right border to the right column
-      if (c === size - 1) {
-        tile.classList.add('object-border-right');
-      }
+      if (c === size - 1) tile.classList.add('object-border-right');
     }
   }
 }
+
 
 // Highlight territory around a given tile
 function highlightTerritory(centerRow, centerCol, radius) {
