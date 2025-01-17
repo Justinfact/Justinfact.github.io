@@ -11,10 +11,20 @@ function createGrid() {
   }
 }
 
+// Global function to clear all click event listeners from tiles
+function clearTileListeners() {
+  const tiles = document.querySelectorAll('.tile');
+  tiles.forEach(tile => {
+    const clone = tile.cloneNode(true); // Clone the tile to remove listeners
+    tile.parentNode.replaceChild(clone, tile);
+  });
+}
+
 // Add an object to the grid
 function addObject(className, size) {
+  clearTileListeners(); // Clear existing listeners before adding new ones
+
   const tiles = document.querySelectorAll('.tile');
-  
   tiles.forEach(tile => {
     tile.addEventListener('click', function placeObject() {
       // Determine the row and column of the clicked tile
@@ -30,13 +40,12 @@ function addObject(className, size) {
             tiles[index].classList.add(className);
           }
         }
-        // Remove the click listener after placement
-        tiles.forEach(tile => tile.removeEventListener('click', placeObject));
       } else {
         alert('Invalid placement!');
-        // Remove click listeners even if placement fails to prevent 3x3 fallback
-        tiles.forEach(tile => tile.removeEventListener('click', placeObject));
       }
+
+      // Clear listeners after placement attempt
+      clearTileListeners();
     });
   });
 }
