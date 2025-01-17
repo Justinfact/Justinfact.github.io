@@ -6,6 +6,9 @@ let currentObject = null; // Tracks the currently selected object for placement
 let hqCount = 0;
 let bearTrapCount = 0;
 
+// Track placed objects in an array
+let placedObjects = [];
+
 // Initialize the grid
 function createGrid() {
   for (let i = 0; i < gridSize * gridSize; i++) {
@@ -75,6 +78,14 @@ function handleTileClick(event) {
       }
     }
 
+    // Record this placement so we can undo it later
+    placedObjects.push({
+      row: row,
+      col: col,
+      size: currentObject.size,
+      className: currentObject.className
+    });
+
     // Add a border to the object if it's not a Banner
     if (currentObject.className !== 'banner') {
       applyObjectBorder(row, col, currentObject.size);
@@ -119,7 +130,6 @@ function applyObjectBorder(row, col, size) {
     }
   }
 }
-
 
 // Highlight territory around a given tile
 function highlightTerritory(centerRow, centerCol, radius) {
@@ -172,6 +182,67 @@ function canPlaceObject(row, col, size) {
   return true;
 }
 
+// Go back one step using pop and redraw the grid
+function undoLastPlacement() {
+  // If there’s nothing to undo, just return.
+  if (placedObjects.length === 0) return;
+
+  placedObjects.pop();
+
+  recalculateCounters();
+  
+  clearGridVisualOnly();
+
+  // Re‐place all objects that remain in placedObjects
+  // (this also re‐applies territory coverage and borders)
+  for (const obj of placedObjects) {
+    placeObjectOnGrid(obj.row, obj.col, obj.className, obj.size);
+  }
+}
+
+// Reset counters if the removed object was an HQ or Bear Trap.
+// (We will also recalculate them from the array if needed)
+function recalculateCounters() {
+  hqCount = 0;
+  bearTrapCount = 0;
+  for (const obj of placedObjects) {
+    if (obj.className === 'hq') hqCount++;
+    if (obj.className === 'bear-trap') bearTrapCount++;
+  }
+}
+
+// Clear the grid visually.
+function clearGridVisualOnly() {
+  const tiles = document.querySelectorAll('.tile');
+  tiles.forEach(tile => {
+    tile.className = 'tile'; // revert to just "tile"
+    tile.dataset.name = '';
+    tile.style.border = '';  // clear inline border if you used it
+  });
+}
+
+function placeObjectOnGrid(row, col, className, size) {
+  const tiles = document.querySelectorAll('.tile');
+  // Place the object tiles
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      const index = (row + r) * gridSize + (col + c);
+      tiles[index].classList.add(className);
+      // remove default border if you’re doing that override
+      tiles[index].classList.remove('object-border-top','object-border-right','object-border-bottom','object-border-left');
+    }
+  }
+
+  // Apply outer borders
+  applyObjectBorder(row, col, size);
+  // If it’s HQ or Banner, highlight territory
+  if (className === 'hq') {
+    highlightTerritory(row, col, 7);
+  } else if (className === 'banner') {
+    highlightTerritory(row, col, 3);
+  }
+}
+
 // Clear the grid
 function clearGrid() {
   const tiles = document.querySelectorAll('.tile');
@@ -190,6 +261,7 @@ function addObject(className, size) {
 }
 
 // Event listeners for toolbar buttons
+document.getElementById('undo').addEventListener('click', undoLastPlacement);
 document.getElementById('add-bear-trap').addEventListener('click', () => addObject('bear-trap', 3));
 document.getElementById('add-hq').addEventListener('click', () => addObject('hq', 3));
 document.getElementById('add-furnace').addEventListener('click', () => addObject('furnace', 2));
