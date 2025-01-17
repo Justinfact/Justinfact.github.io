@@ -122,7 +122,9 @@ function highlightTerritory(centerRow, centerCol, radius) {
           !tiles[index].classList.contains('bear-trap') &&
           !tiles[index].classList.contains('hq') &&
           !tiles[index].classList.contains('furnace') &&
-          !tiles[index].classList.contains('banner')
+          !tiles[index].classList.contains('banner') &&
+          !tiles[index].classList.contains('resource-node') &&
+          !tiles[index].classList.contains('non-buildable-area')
         ) {
           tiles[index].classList.add('covered'); // Highlight as alliance territory
         }
@@ -144,7 +146,9 @@ function canPlaceObject(row, col, size) {
         tiles[index].classList.contains('bear-trap') ||
         tiles[index].classList.contains('hq') ||
         tiles[index].classList.contains('furnace') ||
-        tiles[index].classList.contains('banner')
+        tiles[index].classList.contains('banner') ||
+        tiles[index].classList.contains('resource-node') ||
+        tiles[index].classList.contains('non-buildable-area')
       ) {
         return false;
       }
