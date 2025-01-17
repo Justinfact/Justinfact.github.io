@@ -49,6 +49,13 @@ function handleTileClick(event) {
 // Highlight territory around a given tile
 function highlightTerritory(centerRow, centerCol, radius) {
   const tiles = document.querySelectorAll('.tile');
+
+  // Adjust the center for HQ to use the middle of the 3x3 object
+  if (currentObject && currentObject.className === 'hq') {
+    centerRow += 1; // Move down 1 row to the center
+    centerCol += 1; // Move right 1 column to the center
+  }
+
   for (let r = -radius; r <= radius; r++) {
     for (let c = -radius; c <= radius; c++) {
       const row = centerRow + r;
@@ -67,6 +74,7 @@ function highlightTerritory(centerRow, centerCol, radius) {
     }
   }
 }
+
 
 // Validate object placement
 function canPlaceObject(row, col, size) {
