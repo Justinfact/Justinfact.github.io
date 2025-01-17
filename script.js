@@ -2,6 +2,10 @@ const grid = document.getElementById('grid');
 const gridSize = 40; // 40x40 grid
 let currentObject = null; // Tracks the currently selected object for placement
 
+// Counters to track HQs and Bear Traps
+let hqCount = 0;
+let bearTrapCount = 0;
+
 // Initialize the grid
 function createGrid() {
   for (let i = 0; i < gridSize * gridSize; i++) {
@@ -17,6 +21,16 @@ function createGrid() {
 function handleTileClick(event) {
   if (!currentObject) return; // Do nothing if no object is selected
 
+  // Check HQ and Bear Trap placement limits
+  if (currentObject.className === 'hq' && hqCount >= 1) {
+    alert('Only 1 HQ is allowed on the grid.');
+    return;
+  }
+  if (currentObject.className === 'bear-trap' && bearTrapCount >= 2) {
+    alert('Only 2 Bear Traps are allowed on the grid.');
+    return;
+  }
+
   const tiles = document.querySelectorAll('.tile');
   const tileIndex = parseInt(event.target.dataset.index); // Use dataset to get the tile index
   const row = Math.floor(tileIndex / gridSize);
@@ -31,6 +45,13 @@ function handleTileClick(event) {
         tiles[index].classList.add(currentObject.className);
         tiles[index].classList.remove('covered'); // Ensure object has display priority
       }
+    }
+
+    // Update counters for HQs and Bear Traps
+    if (currentObject.className === 'hq') {
+      hqCount++;
+    } else if (currentObject.className === 'bear-trap') {
+      bearTrapCount++;
     }
 
     // Highlight territory for HQ or Banner
@@ -75,7 +96,6 @@ function highlightTerritory(centerRow, centerCol, radius) {
   }
 }
 
-
 // Validate object placement
 function canPlaceObject(row, col, size) {
   if (row + size > gridSize || col + size > gridSize) return false;
@@ -106,6 +126,8 @@ function clearGrid() {
     tile.dataset.name = '';
   });
   currentObject = null; // Clear any selected object
+  hqCount = 0; // Reset HQ counter
+  bearTrapCount = 0; // Reset Bear Trap counter
 }
 
 // Set the current object for placement
