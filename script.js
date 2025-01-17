@@ -1,3 +1,4 @@
+// Script to manage the grid and object placement
 const grid = document.getElementById('grid');
 const gridSize = 40; // 40x40 grid
 
@@ -13,12 +14,15 @@ function createGrid() {
 // Add an object to the grid
 function addObject(className, size) {
   const tiles = document.querySelectorAll('.tile');
+  
   tiles.forEach(tile => {
     tile.addEventListener('click', function placeObject() {
+      // Determine the row and column of the clicked tile
       const tileIndex = Array.from(tiles).indexOf(this);
       const row = Math.floor(tileIndex / gridSize);
       const col = tileIndex % gridSize;
 
+      // Validate and place the object if placement is valid
       if (canPlaceObject(row, col, size)) {
         for (let r = 0; r < size; r++) {
           for (let c = 0; c < size; c++) {
@@ -26,12 +30,13 @@ function addObject(className, size) {
             tiles[index].classList.add(className);
           }
         }
+        // Remove the click listener after placement
+        tiles.forEach(tile => tile.removeEventListener('click', placeObject));
       } else {
         alert('Invalid placement!');
+        // Remove click listeners even if placement fails to prevent 3x3 fallback
+        tiles.forEach(tile => tile.removeEventListener('click', placeObject));
       }
-
-      // Remove click listeners after placing the object
-      tiles.forEach(tile => tile.removeEventListener('click', placeObject));
     });
   });
 }
