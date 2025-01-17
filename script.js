@@ -1,4 +1,3 @@
-// Script to manage the grid and object placement
 const grid = document.getElementById('grid');
 const gridSize = 40; // 40x40 grid
 
@@ -16,7 +15,6 @@ function addObject(className, size) {
   const tiles = document.querySelectorAll('.tile');
   tiles.forEach(tile => {
     tile.addEventListener('click', function placeObject() {
-      // Validate placement
       const tileIndex = Array.from(tiles).indexOf(this);
       const row = Math.floor(tileIndex / gridSize);
       const col = tileIndex % gridSize;
@@ -40,16 +38,23 @@ function addObject(className, size) {
 
 // Validate object placement
 function canPlaceObject(row, col, size) {
-  if (row + size > gridSize || col + size > gridSize) return false; // Out of bounds
+  // Check if the object goes out of bounds
+  if (row + size > gridSize || col + size > gridSize) return false;
+
   const tiles = document.querySelectorAll('.tile');
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
       const index = (row + r) * gridSize + (col + c);
-      if (tiles[index].classList.contains('bear-trap') ||
-          tiles[index].classList.contains('hq') ||
-          tiles[index].classList.contains('furnace') ||
-          tiles[index].classList.contains('banner')) {
-        return false; // Overlap detected
+
+      // Check if the tile is already occupied
+      if (
+        index >= tiles.length || // Out of grid range
+        tiles[index].classList.contains('bear-trap') ||
+        tiles[index].classList.contains('hq') ||
+        tiles[index].classList.contains('furnace') ||
+        tiles[index].classList.contains('banner')
+      ) {
+        return false;
       }
     }
   }
