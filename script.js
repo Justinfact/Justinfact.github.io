@@ -68,7 +68,7 @@ function handleTileClick(event) {
 
     // Add a border to the object if it's not a Banner
     if (currentObject.className !== 'banner') {
-      applyObjectBorder(row, col, currentObject.size, currentObject.className);
+      applyObjectBorder(row, col, currentObject.size);
     }
 
     // Update counters for HQs and Bear Traps
@@ -91,6 +91,35 @@ function handleTileClick(event) {
   }
 }
 
+// Apply a border around the outer edge of an object (except Banner)
+function applyObjectBorder(row, col, size) {
+  const tiles = document.querySelectorAll('.tile');
+
+  // Loop through the object's grid
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      const index = (row + r) * gridSize + (col + c);
+      const tile = tiles[index];
+
+      // Apply top border to the top row
+      if (r === 0) {
+        tile.classList.add('object-border-top');
+      }
+      // Apply bottom border to the bottom row
+      if (r === size - 1) {
+        tile.classList.add('object-border-bottom');
+      }
+      // Apply left border to the left column
+      if (c === 0) {
+        tile.classList.add('object-border-left');
+      }
+      // Apply right border to the right column
+      if (c === size - 1) {
+        tile.classList.add('object-border-right');
+      }
+    }
+  }
+}
 
 // Highlight territory around a given tile
 function highlightTerritory(centerRow, centerCol, radius) {
