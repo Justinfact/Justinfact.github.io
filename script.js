@@ -21,7 +21,7 @@ function createGrid() {
 function handleTileClick(event) {
   if (!currentObject) return; // Do nothing if no object is selected
 
-  // Check HQ and Bear Trap placement limits
+  // Enforce placement limits
   if (currentObject.className === 'hq' && hqCount >= 1) {
     alert('Only 1 HQ is allowed on the grid.');
     return;
