@@ -20,6 +20,10 @@
       margin: 20px 0;
     }
 
+    #toolbar-bottom {
+      margin: 20px 0;
+    }
+
     button {
       margin: 0 5px;
       padding: 10px 15px;
@@ -85,17 +89,18 @@
 <body>
   <h1>Bear Trap Map</h1>
   <div id="toolbar">
-    <button id="undo">Undo</button>
     <button id="add-bear-trap">Add Bear Trap</button>
     <button id="add-hq">Add HQ</button>
     <button id="add-furnace">Add Furnace</button>
     <button id="add-banner">Add Banner</button>
+  </div>
+  <div id="grid"></div>
+  <div id="toolbar-bottom">
+    <button id="undo">Undo</button>
     <button id="clear-grid">Clear Grid</button>
     <button id="save-layout">Save Layout</button>
     <input type="file" id="load-layout" />
   </div>
-  <div id="grid"></div>
-
   <script src="script.js"></script>
 </body>
 </html>
