@@ -524,6 +524,9 @@ document.getElementById('add-resource-node').addEventListener('click', () => add
 document.getElementById('add-non-buildable').addEventListener('click', () => addObject('non-buildable-area', 1));
 document.getElementById('clear-grid').addEventListener('click', clearGrid);
 document.getElementById('save-layout').addEventListener('click', saveLayout);
+document.getElementById('restore-layout').addEventListener('click', () => {
+  document.getElementById('load-layout').click();
+});
 document.getElementById('load-layout').addEventListener('change', loadLayout);
 
 // Initialize the grid on page load
