@@ -131,7 +131,11 @@ function handleTileClick(event) {
     if (currentObject.className === 'hq') hqCount++;
     if (currentObject.className === 'bear-trap') bearTrapCount++;
 
-    currentObject = null;
+    // **** Only clear currentObject if Shift is NOT held ****
+    if (!event.shiftKey) {
+      currentObject = null;
+    }
+
   } else {
     alert('Invalid placement!');
   }

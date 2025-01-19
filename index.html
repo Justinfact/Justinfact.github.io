@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bear Trap Map</title>
+  <title>Bear Trap Planner</title>
   <style>
     /* Basic CSS styling for the grid and UI elements */
     body {
@@ -53,7 +53,7 @@
     }
 
     .hq {
-      background-color: purple;
+      background-color: blue;
     }
 
     .furnace {
@@ -61,7 +61,7 @@
     }
 
     .banner {
-      background-color: blue;
+      background-color: gray;
     }
 
     .non-buildable-area {
@@ -98,8 +98,10 @@
   </style>
 </head>
 <body>
-  <h1>Bear Trap Map</h1>
-  
+  <h1>Bear Trap Planner</h1>
+  <p id="subtext" style="margin: 0 0 10px; font-style: italic;">
+    Use these buttons to place objects on the map. Shift + Click to place repeatedly.
+  </p>
   <div id="toolbar">
     <button id="add-bear-trap">Bear Trap</button>
     <button id="add-hq">HQ</button>
@@ -120,10 +122,30 @@
   <div id="grid"></div>
 
   <div id="toolbar-bottom">
-    <button id="undo">Undo</button>
-    <button id="clear-grid">Clear Grid</button>
-    <button id="save-layout">Save Layout</button>
-    <button id="restore-layout">Restore Layout</button>
+    <button id="undo">
+      <img src="icons/back.png"
+      alt="Back Icon"
+      style="width:16px; height:16px; margin-right: 5px;" />
+      Undo
+    </button>
+    <button id="clear-grid">
+      <img src="icons/clear.png"
+      alt="Clear Icon"
+      style="width:16px; height:16px; margin-right: 5px;" />
+      Clear Grid
+    </button>
+    <button id="save-layout">
+      <img src="icons/save.png"
+      alt="Save Icon"
+      style="width:16px; height:16px; margin-right: 5px;" />
+      Save Layout
+    </button>
+    <button id="restore-layout">
+      <img src="icons/restore.png"
+      alt="Restore Icon"
+      style="width:16px; height:16px; margin-right: 5px;" />
+      Restore Layout
+    </button>
     <input type="file" id="load-layout" style="display: none;" />
     <button id="set-name">Set Name</button>
     <label>
