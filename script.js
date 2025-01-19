@@ -252,16 +252,15 @@ function handleNameSetting(e) {
   }
 
   // Example: only allow naming for Furnaces
-  if (obj.className !== 'furnace') {
-    alert('Naming is only supported for Furnaces right now.');
+  const allowedClasses = ['furnace', 'hq', 'bear-trap'];
+  if (!allowedClasses.includes(obj.className)) {
+    alert('Naming is only supported for HQ, Bear Traps, and Furnaces.');
     return;
   }
 
   const newName = prompt('Enter a name for this furnace:', obj.name || '');
-  if (newName === null) {
-    // user canceled
-    return;
-  }
+  if (newName === null) return; // user canceled
+  
   obj.name = newName.trim();
   refreshGrid();
 }
